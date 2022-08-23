@@ -1,0 +1,54 @@
+// TODO: Move to the branding repo.
+$dark-300: #454B5B; 
+$dark-200: #616673;
+$elevation-2: 0px 2px 4px rgba(0, 0, 0, 0.08), 0px 2px 8px rgba(0, 0, 0, 0.08);
+
+.dashboard {
+  &-panel {
+    box-shadow: $elevation-2;
+    padding: 2rem;
+    border-radius: 0.25rem;
+    background-color: $white;
+
+    & + & {
+      margin-top: 2.5rem;
+    }
+  }
+
+  &-panel-header-title {
+    margin-bottom: 0;
+    @extend .h2;
+  }
+
+  &-panel-header-subtitle {
+    @extend .small;
+    color: $dark-300;
+    margin-bottom: 0;
+  }
+
+  &-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  &-empty-state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-empty-state-title {
+    color: $dark-200;
+    @extend .h4;
+  }
+
+  &-empty-state-text {
+    color: $dark-200;
+    @extend .small;
+  }
+}

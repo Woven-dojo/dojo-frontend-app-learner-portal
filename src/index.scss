@@ -16,9 +16,17 @@ $fa-font-path: "~font-awesome/fonts";
 @import "./components/dashboard/main-content/course-enrollments/styles/CourseSection";
 @import "./components/dashboard/sidebar/styles/SidebarCard";
 @import "./components/dashboard/styles/SubscriptionExpirationModal";
+@import "./components/dashboard/styles/Dashboard";
 @import "./components/search/styles/";
 @import "./components/skills-quiz/styles/";
 @import "./components/site-header/styles/Header";
 @import "./components/preview-expand/styles/PreviewExpand";
 @import "./components/error-page/styles/ErrorPage";
 @import "./components/pathway/styles";
+
+// TODO: Move to the branding repo.
+$light-200: #F9F9FA;
+
+body {
+  background-color: $light-200;
+}
