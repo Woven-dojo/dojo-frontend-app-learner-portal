@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Container, Row, Col } from '@edx/paragon';
@@ -63,17 +63,6 @@ export default function Dashboard() {
   const courses = [];
   const catalogCourses = [1, 2, 3, 4, 5, 6, 7];
 
-  const renderAvailableCourses = useCallback((count) => (
-    <div>
-      <div className="small text-dark-400">
-        Available for kick-off
-      </div>
-      <div className="h4">
-        {count} {count === 1 ? 'course' : 'courses'}
-      </div>
-    </div>
-  ), []);
-
   return (
     <>
       <Helmet title={`Dashboard - ${name}`} />
@@ -86,7 +75,16 @@ export default function Dashboard() {
         <DashboardPanel
           title="My learning path"
           subtitle="Software development"
-          headerAside={renderAvailableCourses(courses.length)}
+          headerAside={(
+            <div>
+              <div className="small text-dark-400">
+                Available for kick-off
+              </div>
+              <div className="h4">
+                {courses.length} {courses.length === 1 ? 'course' : 'courses'}
+              </div>
+            </div>
+          )}
         >
           {courses.length === 0
             ? (
