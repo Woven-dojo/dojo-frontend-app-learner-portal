@@ -1,17 +1,12 @@
-// TODO: Move to the branding repo.
-$dark-300: #454B5B; 
-$dark-200: #616673;
-$elevation-2: 0px 2px 4px rgba(0, 0, 0, 0.08), 0px 2px 8px rgba(0, 0, 0, 0.08);
-
 .dashboard {
   &-panel {
-    box-shadow: $elevation-2;
-    padding: 2rem;
-    border-radius: 0.25rem;
+    @include pgn-box-shadow(2, "down");
+    padding: 32px;
+    border-radius: 4px;
     background-color: $white;
 
     & + & {
-      margin-top: 2.5rem;
+      margin-top: 40px;
     }
   }
 
@@ -32,7 +27,7 @@ $elevation-2: 0px 2px 4px rgba(0, 0, 0, 0.08), 0px 2px 8px rgba(0, 0, 0, 0.08);
     justify-content: space-between;
     position: relative;
     flex-wrap: wrap;
-    margin-bottom: 1.5rem;
+    margin-bottom: 24px;
   }
 
   &-empty-state {

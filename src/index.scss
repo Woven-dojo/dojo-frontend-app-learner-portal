@@ -8,6 +8,11 @@
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
+@import "@reustleco/dojo-admin-brand/paragon/fonts";
+@import "@reustleco/dojo-admin-brand/paragon/variables";
+@import "@reustleco/dojo-admin-brand/paragon/mixins";
+@import "@reustleco/dojo-admin-brand/paragon/overrides";
+
 @import "./components/course/styles/CourseHeader";
 @import "./components/course/styles/CourseSidebar";
 @import "./components/course/styles/ProgramSidebar";
@@ -23,9 +28,6 @@ $fa-font-path: "~font-awesome/fonts";
 @import "./components/preview-expand/styles/PreviewExpand";
 @import "./components/error-page/styles/ErrorPage";
 @import "./components/pathway/styles";
-
-// TODO: Move to the branding repo.
-$light-200: #F9F9FA;
 
 body {
   background-color: $light-200;
