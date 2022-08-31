@@ -56,8 +56,7 @@ export default function Dashboard() {
     catalogData: { courses_metadata: catalogCourses },
   } = useContext(UserSubsidyContext);
 
-  const catalogPageCount = Math.floor(catalogCourses.length / COURSES_PER_CATALOG_PAGE)
-  + (catalogCourses.length % COURSES_PER_CATALOG_PAGE && 1);
+  const catalogPageCount = Math.ceil(catalogCourses.length / COURSES_PER_CATALOG_PAGE);
   const [activeCatalogPage, setActiveCatalogPage] = useState(1);
   const catalogCoursesOnActivePage = catalogCourses?.slice(
     (activeCatalogPage - 1) * COURSES_PER_CATALOG_PAGE,
@@ -144,14 +143,16 @@ export default function Dashboard() {
               </Row>
             </TransitionReplace>
             {catalogPageCount > 1 && (
-              <div className="dashboard-catalog-pagination">
-                <Pagination
-                  paginationLabel={`Page ${activeCatalogPage} of ${catalogPageCount}`}
-                  pageCount={catalogPageCount}
-                  currentPage={activeCatalogPage}
-                  onPageSelect={(pageNumber) => setActiveCatalogPage(pageNumber)}
-                />
-              </div>
+              <Row>
+                <Col className="d-flex justify-content-center">
+                  <Pagination
+                    paginationLabel={`Page ${activeCatalogPage} of ${catalogPageCount}`}
+                    pageCount={catalogPageCount}
+                    currentPage={activeCatalogPage}
+                    onPageSelect={(pageNumber) => setActiveCatalogPage(pageNumber)}
+                  />
+                </Col>
+              </Row>
             )}
           </div>
         </DashboardPanel>
