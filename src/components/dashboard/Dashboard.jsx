@@ -86,7 +86,8 @@ export default function Dashboard() {
         </h2>
         <p className="mb-5 small">Today is a great day for education.</p>
         <DashboardPanel
-          title={learningPathName}
+          title="My learning path"
+          subtitle={learningPathName}
           headerAside={(
             <div>
               <div className="small text-dark-400">
