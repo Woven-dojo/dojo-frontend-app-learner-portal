@@ -8,7 +8,6 @@ import { getConfig } from '@edx/frontend-platform/config';
 import { Hyperlink } from '@edx/paragon';
 import LoginRedirect from './LoginRedirect';
 import { EnterprisePage } from '../enterprise-page';
-import { EnterpriseBanner } from '../enterprise-banner';
 import { Layout } from '../layout';
 import LoginRefresh from './LoginRefresh';
 import { ErrorPage } from '../error-page';
@@ -47,7 +46,6 @@ export default function AuthenticatedPage({ children, useEnterpriseConfigCache }
       <LoginRefresh>
         <EnterprisePage useEnterpriseConfigCache={useEnterpriseConfigCache}>
           <Layout>
-            <EnterpriseBanner />
             {children}
           </Layout>
         </EnterprisePage>
