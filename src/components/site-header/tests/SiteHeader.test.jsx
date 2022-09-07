@@ -55,19 +55,6 @@ describe('<SiteHeader />', () => {
     expect(screen.getByTestId('header-logo-image-id'));
     expect(screen.getByTestId('header-logo-link-id'));
   });
-  test('does not render link with logo to dashboard when search is disabled', () => {
-    const disableSearchAppState = {
-      ...appState,
-    };
-    disableSearchAppState.enterpriseConfig.disableSearch = true;
-    renderWithRouter(
-      <SiteHeaderWithContext
-        initialAppState={disableSearchAppState}
-      />,
-    );
-    expect(screen.getByTestId('header-logo-image-id'));
-    expect(screen.queryByTestId('header-logo-link-id')).toBeFalsy();
-  });
   test('renders regular logout link in absence of IDP', () => {
     renderWithRouter(
       <SiteHeaderWithContext initialAppState={appState} />,

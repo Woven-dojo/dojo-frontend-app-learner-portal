@@ -2,47 +2,45 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { AppContext } from '@edx/frontend-platform/react';
-import { getConfig } from '@edx/frontend-platform/config';
 import { Container, MediaQuery } from '@edx/paragon';
-import edXLogo from '@edx/brand/logo.svg';
 
 import AvatarDropdown from './AvatarDropdown';
+import dojoLogo from '../../assets/images/dojo-logo.png';
 
 export default function SiteHeader() {
-  const config = getConfig();
   const { enterpriseConfig } = useContext(AppContext);
 
-  const renderLogo = () => {
-    const image = (
+  const renderDojoLogo = () => (
+    <Link to="/">
       <img
         className="d-block logo"
-        src={enterpriseConfig.branding.logo || edXLogo}
-        alt={`${enterpriseConfig.name} logo`}
-        data-testid="header-logo-image-id"
+        src={dojoLogo}
+        alt="Dojo logo"
       />
-    );
-    if (enterpriseConfig.disableSearch) {
-      return image;
-    }
-    return (
-      <>
-        <Link to="/" data-testid="header-logo-link-id">
-          {image}
-        </Link>
-      </>
-    );
-  };
+    </Link>
+  );
+
+  const renderEnterpriseLogo = () => (
+    enterpriseConfig.branding.logo && (
+      <Link to="/" data-testid="header-logo-link-id">
+        <img
+          className="d-block logo"
+          src={enterpriseConfig.branding.logo}
+          alt={`${enterpriseConfig.name} logo`}
+          data-testid="header-logo-image-id"
+        />
+      </Link>
+    )
+  );
 
   const renderDesktopHeader = () => (
     <header className="site-header-desktop">
       <Container size="lg">
         <div className="nav-container position-relative d-flex align-items-center">
-          {renderLogo()}
+          {renderDojoLogo()}
           <nav aria-label="Main" className="nav main-nav" />
           <nav aria-label="Secondary" className="nav secondary-menu-container align-items-center ml-auto">
-            <a href={config.LEARNER_SUPPORT_URL} className="text-gray-700 mr-3">
-              Help
-            </a>
+            {renderEnterpriseLogo()}
             <AvatarDropdown />
           </nav>
         </div>
@@ -55,11 +53,12 @@ export default function SiteHeader() {
       aria-label="Main"
       className="site-header-mobile d-flex justify-content-between align-items-center shadow"
     >
-      <div className="w-100 d-flex justify-content-start" />
-      <div className="w-100 d-flex justify-content-center py-3">
-        {renderLogo()}
+      <div className="w-100 d-flex justify-content-start py-3 ml-2.5">
+        {renderDojoLogo()}
       </div>
-      <div className="w-100 d-flex justify-content-end">
+      <div className="w-100 d-flex justify-content-center " />
+      <div className="w-100 d-flex justify-content-end align-items-center">
+        {renderEnterpriseLogo()}
         <AvatarDropdown showLabel={false} />
       </div>
     </header>
