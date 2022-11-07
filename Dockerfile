@@ -1,6 +1,7 @@
 FROM --platform=linux/amd64 node:12.22.12-bullseye-slim AS node_builder
 WORKDIR /usr/src/app
 COPY . ./
+ARG NPM_AUTH_TOKEN
 RUN npm ci
 RUN npm run build
 
