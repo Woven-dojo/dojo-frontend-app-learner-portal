@@ -6,72 +6,22 @@ exports[`Layout should render the expected HTML 1`] = `
     className="header"
   >
     <div
-      className="px-0 container-mw-lg container-fluid"
+      className="master-header"
     >
       <div
-        className="master-header"
+        className="container"
       >
         <div
-          className="container-fluid"
+          className="align-items-center row"
         >
           <div
-            className="align-items-center row"
+            className="master-header__desktop col"
           >
             <div
-              className="master-header__desktop col"
+              className="align-items-center row"
             >
               <div
-                className="align-items-center row"
-              >
-                <div
-                  className="flex-grow-0 col"
-                >
-                  <a
-                    href="/"
-                    onClick={[Function]}
-                  >
-                    <img
-                      alt=""
-                      src="test-file-stub"
-                    />
-                  </a>
-                </div>
-                <div
-                  className="col"
-                >
-                  
-                </div>
-              </div>
-            </div>
-            <div
-              className="flex-grow-0 master-header__desktop col"
-            >
-              <div
-                className="master-header__user-menu dropdown"
-                data-testid="dropdown"
-              >
-                <button
-                  aria-expanded={false}
-                  aria-haspopup={true}
-                  className="btn-avatar pgn__avatar-button-avatar pgn__avatar-button-avatar-sm dropdown-toggle btn btn-tertiary btn-sm"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <img
-                    alt=""
-                    className="pgn__avatar pgn__avatar-xs"
-                    src="test-file-stub"
-                  />
-                  Menu
-                </button>
-              </div>
-            </div>
-            <div
-              className="master-header__mobile justify-content-between col"
-            >
-              <div
-                className="flex-grow-0 pl-0 col"
+                className="flex-grow-0 col"
               >
                 <a
                   href="/"
@@ -84,42 +34,88 @@ exports[`Layout should render the expected HTML 1`] = `
                 </a>
               </div>
               <div
-                className="master-header__user-menu dropdown"
-                data-testid="dropdown"
+                className="col"
               >
-                <button
-                  aria-expanded={false}
-                  aria-haspopup={true}
-                  className="btn-icon btn-icon-primary btn-icon-sm pgn__dropdown-toggle-iconbutton"
-                  onClick={[Function]}
-                  showLabel={true}
-                  type="button"
+                
+              </div>
+            </div>
+          </div>
+          <div
+            className="flex-grow-0 master-header__desktop col"
+          >
+            <div
+              className="master-header__user-menu dropdown"
+              data-testid="dropdown"
+            >
+              <button
+                aria-expanded={false}
+                aria-haspopup={true}
+                className="btn-avatar pgn__avatar-button-avatar pgn__avatar-button-avatar-sm dropdown-toggle btn btn-tertiary btn-sm"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt=""
+                  className="pgn__avatar pgn__avatar-xs"
+                  src="test-file-stub"
+                />
+                Menu
+              </button>
+            </div>
+          </div>
+          <div
+            className="master-header__mobile justify-content-between col"
+          >
+            <div
+              className="flex-grow-0 pl-0 col"
+            >
+              <a
+                href="/"
+                onClick={[Function]}
+              >
+                <img
+                  alt=""
+                  src="test-file-stub"
+                />
+              </a>
+            </div>
+            <div
+              className="master-header__user-menu dropdown"
+              data-testid="dropdown"
+            >
+              <button
+                aria-expanded={false}
+                aria-haspopup={true}
+                className="btn-icon btn-icon-primary btn-icon-sm pgn__dropdown-toggle-iconbutton"
+                onClick={[Function]}
+                showLabel={true}
+                type="button"
+              >
+                <span
+                  className="btn-icon__icon-container"
                 >
                   <span
-                    className="btn-icon__icon-container"
+                    className="pgn__icon btn-icon__icon"
                   >
-                    <span
-                      className="pgn__icon btn-icon__icon"
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
+                      <path
+                        d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+                        fill="currentColor"
+                      />
+                    </svg>
                   </span>
-                </button>
-              </div>
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -134,7 +130,7 @@ exports[`Layout should render the expected HTML 1`] = `
     </div>
   </main>
   <footer
-    className="master-footer dojo-footer"
+    className="master-footer"
   >
     <div
       className="container"
