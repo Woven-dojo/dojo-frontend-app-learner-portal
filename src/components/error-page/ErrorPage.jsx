@@ -21,9 +21,7 @@ const ErrorPage = ({ title, subtitle, showSiteFooter, children }) => (
         </Col>
       </Container>
     </main>
-    {showSiteFooter && (
-      <Footer left={`Copyright ${new Date().getFullYear()} Dojo. All rights reserved`} className="dojo-footer" />
-    )}
+    {showSiteFooter && <Footer left={`Copyright ${new Date().getFullYear()} Dojo. All rights reserved`} />}
   </>
 );
 

@@ -57,7 +57,7 @@ Array [
     </div>
   </main>,
   <footer
-    className="master-footer dojo-footer"
+    className="master-footer"
   >
     <div
       className="container"
@@ -133,7 +133,7 @@ Array [
     </div>
   </main>,
   <footer
-    className="master-footer dojo-footer"
+    className="master-footer"
   >
     <div
       className="container"
@@ -214,7 +214,7 @@ Array [
     </div>
   </main>,
   <footer
-    className="master-footer dojo-footer"
+    className="master-footer"
   >
     <div
       className="container"

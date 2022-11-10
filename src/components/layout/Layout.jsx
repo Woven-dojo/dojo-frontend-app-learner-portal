@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { IntlProvider } from 'react-intl';
 import { AppContext } from '@edx/frontend-platform/react';
-import { Container } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
 import { Footer, Header } from '@woven-dojo/dojo-frontend-common/dist/components';
 import { useStylesForCustomBrandColors } from './data/hooks';
@@ -38,25 +37,23 @@ export default function Layout({ children }) {
           ))}
         </Helmet>
         <header className="header">
-          <Container size="lg" className="px-0">
-            <Header
-              logoDestination={enterpriseDashboardLink}
-              username={username}
-              userMenu={[
-                {
-                  label: enterpriseConfig.name,
-                  href: enterpriseDashboardLink,
-                },
-                {
-                  label: 'Sign out',
-                  href: logoutUrl,
-                },
-              ]}
-            />
-          </Container>
+          <Header
+            logoDestination={enterpriseDashboardLink}
+            username={username}
+            userMenu={[
+              {
+                label: enterpriseConfig.name,
+                href: enterpriseDashboardLink,
+              },
+              {
+                label: 'Sign out',
+                href: logoutUrl,
+              },
+            ]}
+          />
         </header>
         <main id="content">{children}</main>
-        <Footer left={`Copyright ${new Date().getFullYear()} Dojo. All rights reserved`} className="dojo-footer" />
+        <Footer left={`Copyright ${new Date().getFullYear()} Dojo. All rights reserved`} />
       </>
     </IntlProvider>
   );
