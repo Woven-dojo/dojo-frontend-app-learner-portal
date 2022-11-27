@@ -1,6 +1,7 @@
 .active-filter {
   display: flex;
   flex-wrap: wrap;
+  align-items: baseline;
   gap: 0.5rem;
 
   &__tag {
@@ -9,6 +10,8 @@
     padding: 0.0625rem 0.5rem;
     border: 1px solid $light-300;
     border-radius: $border-radius;
+    display: inline-block;
+    background-color: $light-200;
   }
 
   &__icon {
@@ -19,6 +22,26 @@
     height: 2em;
     background: transparent;
     border: 0;
+  }
+  &__group-name {
+    font-size: 0.75rem;
+    line-height: 2em;
+    font-weight: 600;
+    padding: 0.0625rem 0.5rem 0.0625rem 0;
+  }
+  &__clear-all {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 2em;
+    text-decoration-line: underline;
+    text-transform: uppercase;
+    padding: 0.0625rem 0;
+    border: none;
+    background: transparent;
+    &:hover {
+      text-decoration-line: none;
+    }
   }
 }
 

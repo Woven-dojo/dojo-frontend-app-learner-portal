@@ -64,7 +64,7 @@ export const ActiveFilter = ({ filter }) => {
       accumulator.concat(
         filter.options[group.id]
           .filter((option) => filter.current[group.id].includes(option.value))
-          .map((item) => ({ ...item, group: group.id })),
+          .map((item) => ({ ...item, group: group.id, groupName: group.groupName })),
       ),
     [],
   );
@@ -75,11 +75,19 @@ export const ActiveFilter = ({ filter }) => {
 
   return (
     <div className="active-filter">
-      {activeFilters.map((item) => (
-        <ActiveFilterTag onClick={() => handleChange(item.group, item.value)} key={`${item.group}-${item.value}`}>
-          {item.label}
-        </ActiveFilterTag>
+      {activeFilters.map((item, key) => (
+        <div key={`${item.group}-${item.value}`}>
+          {item.group !== activeFilters[key - 1]?.group && (
+            <span className="active-filter__group-name">{item.groupName}:</span>
+          )}
+          <ActiveFilterTag onClick={() => handleChange(item.group, item.value)}>{item.label}</ActiveFilterTag>
+        </div>
       ))}
+      {activeFilters.length !== 0 && (
+        <button className="active-filter__clear-all" type="button" onClick={() => filter.clear()}>
+          Clear All
+        </button>
+      )}
     </div>
   );
 };

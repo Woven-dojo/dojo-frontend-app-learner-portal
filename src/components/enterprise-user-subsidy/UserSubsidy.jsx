@@ -44,6 +44,9 @@ const UserSubsidy = ({ children }) => {
       };
     });
   }, []);
+
+  const clearFilter = () => setCatalogFilter(filterInitial);
+
   const contextValue = useMemo(() => {
     if (isLoading) {
       return {};
@@ -58,6 +61,7 @@ const UserSubsidy = ({ children }) => {
           current: catalogFilter,
           options: filterOptions,
           toggle: toggleFilter,
+          clear: clearFilter,
         },
         requestCourse,
       },
