@@ -31,7 +31,7 @@ const applyFilter = (courses = [], filter = {}) => {
 
   if (filter.search.length) {
     filteredCourses = filteredCourses.filter((course) =>
-      filter.search.every((searchItem) => course.full_description.toLowerCase().includes(searchItem.toLowerCase())),
+      course.full_description.toLowerCase().includes(filter.search.toLowerCase()),
     );
   }
 

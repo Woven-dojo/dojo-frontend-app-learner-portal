@@ -9,7 +9,7 @@ export const filterInitial = {
   languages: [],
   difficultyLevels: [],
   deliveryMethods: [],
-  search: [],
+  search: '',
 };
 
 export const filterGroups = [

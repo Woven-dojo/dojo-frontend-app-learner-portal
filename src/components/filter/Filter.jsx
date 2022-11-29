@@ -30,7 +30,7 @@ export const Filter = ({ filter }) => {
     filter.toggle(group, [event.target.value]);
   };
   const filtredFilterGroups = getFilterGroups(filter.isShowLearningPathFlag);
-  const onSubmit = (value) => filter.toggle('search', [value]);
+  const onSubmit = (value) => filter.search(value);
 
   return (
     <>
@@ -72,13 +72,8 @@ export const ActiveFilter = ({ filter }) => {
       ),
     [],
   );
-
-  const searchFilters = filter.current.search?.map((searchFilter) => ({
-    label: searchFilter,
-    group: 'search',
-  }));
-
-  const activeSearchAndFilters = [...activeFilters, ...searchFilters];
+  const searchFilter = filter.current.search.length ? [{ value: filter.current.search, group: 'search' }] : [];
+  const activeSearchAndFilters = [...activeFilters, ...searchFilter];
 
   const handleChange = (group, value) => {
     filter.toggle(group, [value]);
@@ -88,8 +83,8 @@ export const ActiveFilter = ({ filter }) => {
     <div className="active-filter">
       {activeSearchAndFilters.map((item) =>
         item.group === 'search' ? (
-          <ActiveFilterTag onClick={() => handleChange(item.group, item.label)} key={`${item.group}-${item.label}`}>
-            {item.label}
+          <ActiveFilterTag onClick={() => filter.removeSearch()} key={`search-${item.value}`}>
+            {item.value}
           </ActiveFilterTag>
         ) : (
           <ActiveFilterTag onClick={() => handleChange(item.group, item.value)} key={`${item.group}-${item.value}`}>
@@ -103,7 +98,7 @@ export const ActiveFilter = ({ filter }) => {
 
 const filterPropTypes = PropTypes.shape({
   toggle: PropTypes.func.isRequired,
-  current: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
+  current: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])).isRequired,
   options: PropTypes.objectOf(
     PropTypes.arrayOf(
       PropTypes.shape({

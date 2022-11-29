@@ -44,6 +44,21 @@ const UserSubsidy = ({ children }) => {
       };
     });
   }, []);
+
+  const searchFilter = useCallback((options) => {
+    setCatalogFilter((currentFilter) => ({
+      ...currentFilter,
+      search: options,
+    }));
+  }, []);
+
+  const removeSearchFilter = useCallback(() => {
+    setCatalogFilter((currentFilter) => ({
+      ...currentFilter,
+      search: '',
+    }));
+  }, []);
+
   const contextValue = useMemo(() => {
     if (isLoading) {
       return {};
@@ -58,11 +73,23 @@ const UserSubsidy = ({ children }) => {
           current: catalogFilter,
           options: filterOptions,
           toggle: toggleFilter,
+          search: searchFilter,
+          removeSearch: removeSearchFilter,
         },
         requestCourse,
       },
     };
-  }, [isLoading, catalogData, learningPathData, catalogFilter, isShowLearningPathFlag, requestCourse, toggleFilter]);
+  }, [
+    isLoading,
+    catalogData,
+    learningPathData,
+    catalogFilter,
+    isShowLearningPathFlag,
+    requestCourse,
+    toggleFilter,
+    searchFilter,
+    removeSearchFilter,
+  ]);
 
   if (isLoading) {
     return (
