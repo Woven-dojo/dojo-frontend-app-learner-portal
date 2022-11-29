@@ -29,6 +29,12 @@ const applyFilter = (courses = [], filter = {}) => {
     filteredCourses = filteredCourses.filter((course) => filter.deliveryMethods.includes(course.delivery_method));
   }
 
+  if (filter.search.length) {
+    filteredCourses = filteredCourses.filter((course) =>
+      filter.search.every((searchItem) => course.full_description.toLowerCase().includes(searchItem.toLowerCase())),
+    );
+  }
+
   return filteredCourses;
 };
 

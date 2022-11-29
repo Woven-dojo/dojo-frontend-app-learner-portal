@@ -1,7 +1,7 @@
 import { Form } from '@edx/paragon';
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { SearchBar } from '@woven-dojo/dojo-frontend-common/dist';
 import { filterGroups } from '../enterprise-user-subsidy/data/constants';
 import closeIcon from '../../assets/icons/close.svg';
 
@@ -30,9 +30,13 @@ export const Filter = ({ filter }) => {
     filter.toggle(group, [event.target.value]);
   };
   const filtredFilterGroups = getFilterGroups(filter.isShowLearningPathFlag);
+  const onSubmit = (value) => filter.toggle('search', [value]);
+
   return (
     <>
-      <h3 className="mb-4">Filter by</h3>
+      <h3 className="mb-4">Search and filter</h3>
+      <SearchBar onSubmit={onSubmit} btnSubmitTitle="Search" />
+      <hr className="my-4" />
       {filtredFilterGroups.map((group, index) => (
         <React.Fragment key={group.id}>
           {index !== 0 && <hr />}
@@ -69,17 +73,30 @@ export const ActiveFilter = ({ filter }) => {
     [],
   );
 
+  const searchFilters = filter.current.search?.map((searchFilter) => ({
+    label: searchFilter,
+    group: 'search',
+  }));
+
+  const activeSearchAndFilters = [...activeFilters, ...searchFilters];
+
   const handleChange = (group, value) => {
     filter.toggle(group, [value]);
   };
 
   return (
     <div className="active-filter">
-      {activeFilters.map((item) => (
-        <ActiveFilterTag onClick={() => handleChange(item.group, item.value)} key={`${item.group}-${item.value}`}>
-          {item.label}
-        </ActiveFilterTag>
-      ))}
+      {activeSearchAndFilters.map((item) =>
+        item.group === 'search' ? (
+          <ActiveFilterTag onClick={() => handleChange(item.group, item.label)} key={`${item.group}-${item.label}`}>
+            {item.label}
+          </ActiveFilterTag>
+        ) : (
+          <ActiveFilterTag onClick={() => handleChange(item.group, item.value)} key={`${item.group}-${item.value}`}>
+            {item.label}
+          </ActiveFilterTag>
+        ),
+      )}
     </div>
   );
 };
