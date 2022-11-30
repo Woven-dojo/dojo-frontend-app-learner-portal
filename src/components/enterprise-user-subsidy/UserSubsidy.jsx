@@ -47,6 +47,20 @@ const UserSubsidy = ({ children }) => {
 
   const clearFilter = () => setCatalogFilter(filterInitial);
 
+  const searchFilter = useCallback((options) => {
+    setCatalogFilter((currentFilter) => ({
+      ...currentFilter,
+      search: options,
+    }));
+  }, []);
+
+  const removeSearchFilter = useCallback(() => {
+    setCatalogFilter((currentFilter) => ({
+      ...currentFilter,
+      search: '',
+    }));
+  }, []);
+
   const contextValue = useMemo(() => {
     if (isLoading) {
       return {};
@@ -62,11 +76,23 @@ const UserSubsidy = ({ children }) => {
           options: filterOptions,
           toggle: toggleFilter,
           clear: clearFilter,
+          search: searchFilter,
+          removeSearch: removeSearchFilter,
         },
         requestCourse,
       },
     };
-  }, [isLoading, catalogData, learningPathData, catalogFilter, isShowLearningPathFlag, requestCourse, toggleFilter]);
+  }, [
+    isLoading,
+    catalogData,
+    learningPathData,
+    catalogFilter,
+    isShowLearningPathFlag,
+    requestCourse,
+    toggleFilter,
+    searchFilter,
+    removeSearchFilter,
+  ]);
 
   if (isLoading) {
     return (

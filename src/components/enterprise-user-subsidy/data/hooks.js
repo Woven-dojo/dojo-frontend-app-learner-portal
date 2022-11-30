@@ -9,7 +9,7 @@ import { fetchEnterpriseCatalogData, fetchLearningPathData, requestCourse } from
  * triggering a new query (via filters) will result in the UserSubsidyContext.Provider
  * returning a loading screen.
  */
-const applyFilter = (courses = [], filter = {}) => {
+const applyFilter = (courses = [], filter = {}, locales = []) => {
   let filteredCourses = [...courses];
   if (filter.learningPaths.length) {
     filteredCourses = filteredCourses.filter((course) =>
@@ -27,6 +27,12 @@ const applyFilter = (courses = [], filter = {}) => {
 
   if (filter.deliveryMethods.length) {
     filteredCourses = filteredCourses.filter((course) => filter.deliveryMethods.includes(course.delivery_method));
+  }
+
+  if (filter.search.length) {
+    filteredCourses = filteredCourses.filter((course) =>
+      course.full_description.toLocaleLowerCase(locales).includes(filter.search.toLocaleLowerCase(locales)),
+    );
   }
 
   return filteredCourses;

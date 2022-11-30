@@ -1,7 +1,7 @@
 import { Form } from '@edx/paragon';
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { SearchBar } from '@woven-dojo/dojo-frontend-common/dist';
 import { filterGroups } from '../enterprise-user-subsidy/data/constants';
 import closeIcon from '../../assets/icons/close.svg';
 
@@ -30,9 +30,12 @@ export const Filter = ({ filter }) => {
     filter.toggle(group, [event.target.value]);
   };
   const filtredFilterGroups = getFilterGroups(filter.isShowLearningPathFlag);
+
   return (
     <>
-      <h3 className="mb-4">Filter by</h3>
+      <h3 className="mb-4">Search and filter</h3>
+      <SearchBar onSubmit={(value) => filter.search(value)} btnSubmitTitle="Search" />
+      <hr className="my-4" />
       {filtredFilterGroups.map((group, index) => (
         <React.Fragment key={group.id}>
           {index !== 0 && <hr />}
@@ -69,20 +72,33 @@ export const ActiveFilter = ({ filter }) => {
     [],
   );
 
+  if (filter.current.search.length) activeFilters.push({ value: filter.current.search, group: 'search' });
+
   const handleChange = (group, value) => {
     filter.toggle(group, [value]);
   };
 
   return (
     <div className="active-filter">
-      {activeFilters.map((item, key) => (
-        <div key={`${item.group}-${item.value}`}>
-          {item.group !== activeFilters[key - 1]?.group && (
-            <span className="active-filter__group-name">{item.groupName}:</span>
-          )}
-          <ActiveFilterTag onClick={() => handleChange(item.group, item.value)}>{item.label}</ActiveFilterTag>
-        </div>
-      ))}
+      {activeFilters.map((item, key) =>
+        item.group === 'search' ? (
+          <div key={`${item.group}-${item.value}`}>
+            <span className="active-filter__group-name">Search:</span>
+            <ActiveFilterTag onClick={() => filter.removeSearch()} key={`search-${item.value}`}>
+              {item.value}
+            </ActiveFilterTag>
+          </div>
+        ) : (
+          <div key={`${item.group}-${item.value}`}>
+            {item.group !== activeFilters[key - 1]?.group && (
+              <span className="active-filter__group-name">{item.groupName}:</span>
+            )}
+            <ActiveFilterTag onClick={() => handleChange(item.group, item.value)} key={`${item.group}-${item.value}`}>
+              {item.label}
+            </ActiveFilterTag>
+          </div>
+        ),
+      )}
       {activeFilters.length !== 0 && (
         <button className="active-filter__clear-all" type="button" onClick={() => filter.clear()}>
           Clear All
@@ -94,7 +110,7 @@ export const ActiveFilter = ({ filter }) => {
 
 const filterPropTypes = PropTypes.shape({
   toggle: PropTypes.func.isRequired,
-  current: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
+  current: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])).isRequired,
   options: PropTypes.objectOf(
     PropTypes.arrayOf(
       PropTypes.shape({
