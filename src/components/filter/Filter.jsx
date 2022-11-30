@@ -30,12 +30,11 @@ export const Filter = ({ filter }) => {
     filter.toggle(group, [event.target.value]);
   };
   const filtredFilterGroups = getFilterGroups(filter.isShowLearningPathFlag);
-  const onSubmit = (value) => filter.search(value);
 
   return (
     <>
       <h3 className="mb-4">Search and filter</h3>
-      <SearchBar onSubmit={onSubmit} btnSubmitTitle="Search" />
+      <SearchBar onSubmit={(value) => filter.search(value)} btnSubmitTitle="Search" />
       <hr className="my-4" />
       {filtredFilterGroups.map((group, index) => (
         <React.Fragment key={group.id}>
@@ -72,8 +71,8 @@ export const ActiveFilter = ({ filter }) => {
       ),
     [],
   );
-  const searchFilter = filter.current.search.length ? [{ value: filter.current.search, group: 'search' }] : [];
-  const activeSearchAndFilters = [...activeFilters, ...searchFilter];
+
+  if (filter.current.search.length) activeFilters.push({ value: filter.current.search, group: 'search' });
 
   const handleChange = (group, value) => {
     filter.toggle(group, [value]);
@@ -81,7 +80,7 @@ export const ActiveFilter = ({ filter }) => {
 
   return (
     <div className="active-filter">
-      {activeSearchAndFilters.map((item) =>
+      {activeFilters.map((item) =>
         item.group === 'search' ? (
           <ActiveFilterTag onClick={() => filter.removeSearch()} key={`search-${item.value}`}>
             {item.value}
