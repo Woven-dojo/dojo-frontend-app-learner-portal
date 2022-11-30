@@ -30,11 +30,14 @@ export const Filter = ({ filter }) => {
     filter.toggle(group, [event.target.value]);
   };
   const filtredFilterGroups = getFilterGroups(filter.isShowLearningPathFlag);
-
   return (
     <>
       <h3 className="mb-4">Search and filter</h3>
-      <SearchBar onSubmit={(value) => filter.search(value)} btnSubmitTitle="Search" />
+      <SearchBar
+        onSubmit={(value) => filter.search(value)}
+        value={filter.current.search || ''}
+        btnSubmitTitle="Search"
+      />
       <hr className="my-4" />
       {filtredFilterGroups.map((group, index) => (
         <React.Fragment key={group.id}>
