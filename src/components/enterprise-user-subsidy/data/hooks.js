@@ -67,7 +67,6 @@ export function useCatalogData({ enterpriseId, filter = {} }) {
       })),
     }));
   }, []);
-
   return [
     {
       ...catalogData,
