@@ -19,11 +19,9 @@ export const UserSubsidyContext = createContext();
 const UserSubsidy = ({ children }) => {
   const { enterpriseConfig } = useContext(AppContext);
   const [catalogFilter, setCatalogFilter] = useState(filterInitial);
-  const [sortingOption, setSortingOption] = useState('');
   const [catalogData, isLoadingCatalogData, requestCourse] = useCatalogData({
     enterpriseId: enterpriseConfig.uuid,
     filter: catalogFilter,
-    sorting: sortingOption,
   });
   const [learningPathData, isLoadingLearningPathdata] = useLearningPathData();
   const featureFlagsData = useQuery('featureFlags', fetchFeatureFlags);
@@ -46,8 +44,6 @@ const UserSubsidy = ({ children }) => {
       };
     });
   }, []);
-
-  const toggleSorting = useCallback((option) => setSortingOption(option), []);
 
   const clearFilter = () => setCatalogFilter(filterInitial);
 
@@ -83,7 +79,6 @@ const UserSubsidy = ({ children }) => {
           search: searchFilter,
           removeSearch: removeSearchFilter,
         },
-        sorting: toggleSorting,
         requestCourse,
       },
     };
@@ -97,7 +92,6 @@ const UserSubsidy = ({ children }) => {
     toggleFilter,
     searchFilter,
     removeSearchFilter,
-    toggleSorting,
   ]);
 
   if (isLoading) {

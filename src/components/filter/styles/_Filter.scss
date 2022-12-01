@@ -15,13 +15,16 @@
   }
 
   &__icon {
-    margin-left: 0.25rem;
+    margin-left: 0.35rem;
     padding: 0;
     display: inline-block;
-    width: 2em;
+    width: 1.5em;
     height: 2em;
     background: transparent;
     border: 0;
+    img {
+      transform: scale(0.9);
+    }
   }
   &__group-name {
     font-size: 0.75rem;

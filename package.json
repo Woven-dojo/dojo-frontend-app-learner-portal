@@ -18,7 +18,7 @@
     "@reactour/tour": "^3.1.4",
     "@sentry/react": "^6.19.6",
     "@sentry/tracing": "^6.19.6",
-    "@woven-dojo/dojo-frontend-common": "^1.1.31",
+    "@woven-dojo/dojo-frontend-common": "^1.1.30",
     "algoliasearch": "4.6.0",
     "axios": "0.21.2",
     "classnames": "2.2.6",
