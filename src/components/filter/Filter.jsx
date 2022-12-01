@@ -58,7 +58,7 @@ const ActiveFilterTag = ({ children, onClick }) => (
   <span className="active-filter__tag">
     {children}
     <button onClick={onClick} className="active-filter__icon" type="button">
-      <img src={closeIcon} alt="Remove this filter" />
+      <img className="active-filter__icon__img" src={closeIcon} alt="Remove this filter" />
     </button>
   </span>
 );

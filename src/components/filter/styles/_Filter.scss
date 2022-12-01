@@ -22,8 +22,10 @@
     height: 2em;
     background: transparent;
     border: 0;
-    img {
+    &__img {
       transform: scale(0.9);
+      display: inline-block;
+      margin-top: -1px;
     }
   }
   &__group-name {
