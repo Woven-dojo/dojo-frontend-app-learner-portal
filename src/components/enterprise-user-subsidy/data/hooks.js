@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { fetchEnterpriseCatalogData, fetchLearningPathData, requestCourse } from './service';
 
+import { SORT_OPTIONS_NAME, COURSE_DIFFICULTY_LEVEL } from './constants';
+
 /**
  * This is a temporary solution in order to implement filtering on FE. Once we have
  * proper API capable of filtering, we will pass the params to BE and cache the results
@@ -38,7 +40,36 @@ const applyFilter = (courses = [], filter = {}, locales = []) => {
   return filteredCourses;
 };
 
-export function useCatalogData({ enterpriseId, filter = {} }) {
+const applySorting = (courses = [], sorting = '', locales = []) => {
+  let sortededCourses = [...courses];
+
+  const sortMap = [
+    COURSE_DIFFICULTY_LEVEL.BASIC,
+    COURSE_DIFFICULTY_LEVEL.INTERMEDIATE,
+    COURSE_DIFFICULTY_LEVEL.ADVANCED,
+  ];
+
+  if (sorting === SORT_OPTIONS_NAME.ALPHABETICALLY) {
+    sortededCourses = courses.sort((courseA, courseB) => courseA.title.localeCompare(courseB.title, locales));
+  }
+  if (sorting === SORT_OPTIONS_NAME.DIFFICULTY_ASC) {
+    sortededCourses = courses.sort(
+      (courseA, courseB) =>
+        (courseA.difficulty_level === null) - (courseB.difficulty_level === null) ||
+        sortMap.indexOf(courseA.difficulty_level) - sortMap.indexOf(courseB.difficulty_level),
+    );
+  }
+  if (sorting === SORT_OPTIONS_NAME.DIFFICULTY_DESC) {
+    sortededCourses = courses.sort(
+      (courseA, courseB) =>
+        (courseA.difficulty_level === null) - (courseB.difficulty_level === null) ||
+        -(sortMap.indexOf(courseA.difficulty_level) - sortMap.indexOf(courseB.difficulty_level)),
+    );
+  }
+  return sortededCourses;
+};
+
+export function useCatalogData({ enterpriseId, filter = {}, sorting = '' }) {
   const [catalogData, setCatalogData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -67,10 +98,11 @@ export function useCatalogData({ enterpriseId, filter = {} }) {
       })),
     }));
   }, []);
+
   return [
     {
       ...catalogData,
-      courses_metadata: applyFilter(catalogData.courses_metadata, filter),
+      courses_metadata: applySorting(applyFilter(catalogData.courses_metadata, filter), sorting),
     },
     isLoading,
     requestCourseHandler,

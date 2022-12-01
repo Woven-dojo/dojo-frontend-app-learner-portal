@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Container, Row, Col, Pagination, TransitionReplace, Button, Hyperlink, Spinner } from '@edx/paragon';
 import { AppContext } from '@edx/frontend-platform/react';
 import PropTypes from 'prop-types';
-import { CourseCard, CourseDetails } from '@woven-dojo/dojo-frontend-common';
+import { CourseCard, CourseDetails, Sortbox } from '@woven-dojo/dojo-frontend-common';
 import { useTour } from '@reactour/tour';
 import emptyStateImage from '../../assets/images/empty-state.svg';
 import noResultsImage from '../../assets/images/no-results.svg';
@@ -13,7 +13,7 @@ import DashboardDrawer from './DashboardDrawer';
 import { UserSubsidyContext } from '../enterprise-user-subsidy';
 import { Filter, ActiveFilter } from '../filter/Filter';
 import { Alarm, Baseline, Certificate, Checklist, Dash, World } from './data/svg';
-import { COURSES_PER_CATALOG_PAGE, LEARNING_PATH, CATALOG_COURSE } from './data/constants';
+import { COURSES_PER_CATALOG_PAGE, LEARNING_PATH, CATALOG_COURSE, courseSortOptions } from './data/constants';
 import { languageCodeToLabel } from '../../utils/common';
 import { useToast } from '../Toasts/hooks';
 import { setDashIfEmpty, isElementInDOM } from './utils/common';
@@ -52,6 +52,7 @@ export default function Dashboard() {
     catalog: {
       data: { courses_metadata: catalogCourses },
       filter,
+      sorting,
       requestCourse,
     },
   } = useContext(UserSubsidyContext);
@@ -67,6 +68,7 @@ export default function Dashboard() {
     ) ?? [];
   const [activeCourseParams, setActiveCourseParams] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [sortingOption, setSortingOption] = useState();
 
   const activeCourse = useMemo(() => {
     if (!activeCourseParams) {
@@ -180,6 +182,10 @@ export default function Dashboard() {
     };
   }, [activeCourse, isLoading, kickoffSurvey, requestCourse, toast]);
 
+  const hangleSortingChange = (option) => {
+    setSortingOption(option);
+    sorting(option);
+  };
   return (
     <>
       {isOpen && (
@@ -258,6 +264,14 @@ export default function Dashboard() {
           id="course-catalog"
           className="tour-course-catalog"
           tourClassNamePositionHelper="tour-course-catalog-top-position"
+          headerAside={
+            <Sortbox
+              title="Sort by"
+              onChange={(value) => hangleSortingChange(value)}
+              options={courseSortOptions}
+              value={sortingOption}
+            />
+          }
         >
           <hr />
           <Row>
