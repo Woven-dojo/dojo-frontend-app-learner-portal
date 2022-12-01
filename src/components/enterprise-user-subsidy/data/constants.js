@@ -90,3 +90,16 @@ export const filterOptions = {
 };
 
 export const SHOW_LEARNING_PATH_FLAG = 'lms.filter.show_learning_path';
+
+export const SORT_OPTIONS_NAME = {
+  RECOMENDED: 'recomended',
+  ALPHABETICALLY: 'alphabetically',
+  DIFFICULTY_ASC: 'difficultyASC',
+  DIFFICULTY_DESC: 'difficultyDESC',
+};
+
+export const COURSE_DIFFICULTY_LEVEL = {
+  BASIC: 'Basic',
+  INTERMEDIATE: 'Intermediate',
+  ADVANCED: 'Advanced',
+};
