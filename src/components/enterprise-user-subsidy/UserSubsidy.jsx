@@ -61,8 +61,6 @@ const UserSubsidy = ({ children }) => {
     }));
   }, []);
 
-  const toggleSorting = useCallback((option) => setSortingOption(option), []);
-
   const contextValue = useMemo(() => {
     if (isLoading) {
       return {};
@@ -80,7 +78,7 @@ const UserSubsidy = ({ children }) => {
           search: searchFilter,
           removeSearch: removeSearchFilter,
         },
-        sorting: toggleSorting,
+        sorting: (option) => setSortingOption(option),
         requestCourse,
       },
     };
@@ -93,7 +91,6 @@ const UserSubsidy = ({ children }) => {
     requestCourse,
     toggleFilter,
     searchFilter,
-    toggleSorting,
     removeSearchFilter,
   ]);
 
