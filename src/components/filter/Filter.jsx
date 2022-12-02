@@ -12,9 +12,9 @@ const getFilterGroups = (isShowLearningPathFlag) =>
     }
     return filterGroup;
   });
-const FilterGroup = ({ options, label, onChange, active = [] }) => (
+const FilterGroup = ({ options, groupName, onChange, active = [] }) => (
   <div className="filter-group">
-    <h4 className="filter-group__title">{label}</h4>
+    <h4 className="filter-group__title">{groupName}</h4>
     {options.map((option) => (
       <div key={option.value} className="filter-group__item">
         <Form.Checkbox checked={active.includes(option.value)} onChange={onChange} value={option.value}>
@@ -45,7 +45,7 @@ export const Filter = ({ filter }) => {
           <FilterGroup
             options={filter.options[group.id]}
             active={filter.current[group.id]}
-            label={group.label}
+            groupName={group.groupName}
             onChange={handleChange(group.id)}
           />
         </React.Fragment>
@@ -136,7 +136,7 @@ FilterGroup.propTypes = {
       label: PropTypes.string,
     }),
   ).isRequired,
-  label: PropTypes.node.isRequired,
+  groupName: PropTypes.node.isRequired,
   onChange: PropTypes.func.isRequired,
   active: PropTypes.arrayOf(PropTypes.string),
 };
