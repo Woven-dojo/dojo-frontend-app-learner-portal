@@ -39,32 +39,32 @@ const applyFilter = (courses = [], filter = {}, locales = []) => {
 };
 
 const applySorting = (courses = [], sorting = '', locales = []) => {
-  let sortededCourses = [...courses];
+  if (!sorting) return courses;
 
-  const sortMap = [
+  const sortingArr = [
     COURSE_DIFFICULTY_LEVEL.BASIC,
     COURSE_DIFFICULTY_LEVEL.INTERMEDIATE,
     COURSE_DIFFICULTY_LEVEL.ADVANCED,
   ];
 
   if (sorting === SORT_OPTIONS_NAME.ALPHABETICALLY) {
-    sortededCourses = courses.sort((courseA, courseB) => courseA.title.localeCompare(courseB.title, locales));
+    courses.sort((courseA, courseB) => courseA.title.localeCompare(courseB.title, locales));
   }
   if (sorting === SORT_OPTIONS_NAME.DIFFICULTY_ASC) {
-    sortededCourses = courses.sort(
+    const sortingArrASC = [...sortingArr, null];
+    courses.sort(
       (courseA, courseB) =>
-        (courseA.difficulty_level === null) - (courseB.difficulty_level === null) ||
-        sortMap.indexOf(courseA.difficulty_level) - sortMap.indexOf(courseB.difficulty_level),
+        sortingArrASC.indexOf(courseA.difficulty_level) - sortingArrASC.indexOf(courseB.difficulty_level),
     );
   }
   if (sorting === SORT_OPTIONS_NAME.DIFFICULTY_DESC) {
-    sortededCourses = courses.sort(
+    const sortingArrReverse = [...sortingArr.reverse(), null];
+    courses.sort(
       (courseA, courseB) =>
-        (courseA.difficulty_level === null) - (courseB.difficulty_level === null) ||
-        -(sortMap.indexOf(courseA.difficulty_level) - sortMap.indexOf(courseB.difficulty_level)),
+        sortingArrReverse.indexOf(courseA.difficulty_level) - sortingArrReverse.indexOf(courseB.difficulty_level),
     );
   }
-  return sortededCourses;
+  return courses;
 };
 
 export function useCatalogData({ enterpriseId, filter = {}, sorting = '' }) {

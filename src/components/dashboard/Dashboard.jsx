@@ -13,7 +13,8 @@ import DashboardDrawer from './DashboardDrawer';
 import { UserSubsidyContext } from '../enterprise-user-subsidy';
 import { Filter, ActiveFilter } from '../filter/Filter';
 import { Alarm, Baseline, Certificate, Checklist, Dash, World } from './data/svg';
-import { COURSES_PER_CATALOG_PAGE, LEARNING_PATH, CATALOG_COURSE, courseSortOptions } from './data/constants';
+import { COURSES_PER_CATALOG_PAGE, LEARNING_PATH, CATALOG_COURSE } from './data/constants';
+import { courseSortOptions, SORT_OPTIONS_NAME } from '../enterprise-user-subsidy/data/constants';
 import { languageCodeToLabel } from '../../utils/common';
 import { useToast } from '../Toasts/hooks';
 import { setDashIfEmpty, isElementInDOM } from './utils/common';
@@ -68,7 +69,7 @@ export default function Dashboard() {
     ) ?? [];
   const [activeCourseParams, setActiveCourseParams] = useState(null);
   const [isLoading, setLoading] = useState(false);
-  const [sortingOption, setSortingOption] = useState();
+  const [sortingOption, setSortingOption] = useState(SORT_OPTIONS_NAME.RECOMENDED);
 
   const activeCourse = useMemo(() => {
     if (!activeCourseParams) {

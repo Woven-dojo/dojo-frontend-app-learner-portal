@@ -103,3 +103,10 @@ export const COURSE_DIFFICULTY_LEVEL = {
   INTERMEDIATE: 'Intermediate',
   ADVANCED: 'Advanced',
 };
+
+export const courseSortOptions = [
+  { value: SORT_OPTIONS_NAME.RECOMENDED, label: 'Dojo recommended' },
+  { value: SORT_OPTIONS_NAME.ALPHABETICALLY, label: 'Alphabetically' },
+  { value: SORT_OPTIONS_NAME.DIFFICULTY_ASC, label: 'Difficulty: Basic to Advanced' },
+  { value: SORT_OPTIONS_NAME.DIFFICULTY_DESC, label: 'Difficulty: Advanced to Basic' },
+];
