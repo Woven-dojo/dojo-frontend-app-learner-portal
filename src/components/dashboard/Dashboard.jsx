@@ -96,7 +96,7 @@ export default function Dashboard() {
 
   useLayoutEffect(() => {
     setTimeout(() => {
-      if (!localStorage.getItem('spotlightTutorialShown')) {
+      if (localStorage.getItem('spotlightTutorialShown')) {
         const filtredTutorialSteps = steps.filter(isElementInDOM);
         setSteps(filtredTutorialSteps);
         localStorage.setItem('spotlightTutorialShown', true);
