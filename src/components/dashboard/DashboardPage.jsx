@@ -13,10 +13,6 @@ export default function DashboardPage() {
     document.body.style.overflowY = 'auto';
   };
 
-  window.onscroll = function () {
-    window.scrollTo(0, 0);
-  };
-
   return (
     <AuthenticatedUserSubsidyPage>
       <TourProvider

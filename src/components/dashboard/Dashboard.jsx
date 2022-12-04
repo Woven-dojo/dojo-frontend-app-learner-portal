@@ -96,7 +96,7 @@ export default function Dashboard() {
 
   useLayoutEffect(() => {
     setTimeout(() => {
-      if (localStorage.getItem('spotlightTutorialShown')) {
+      if (!localStorage.getItem('spotlightTutorialShown')) {
         const filtredTutorialSteps = steps.filter(isElementInDOM);
         setSteps(filtredTutorialSteps);
         localStorage.setItem('spotlightTutorialShown', true);
@@ -114,6 +114,15 @@ export default function Dashboard() {
     // As that's not case at this dependency array, the error is disabled.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter.current]);
+
+  useEffect(() => {
+    const scrollToTop = () => window.scrollTo(0, 0);
+    if (isOpen) {
+      window.addEventListener('scroll', scrollToTop);
+    } else {
+      window.removeEventListener('scroll', scrollToTop);
+    }
+  }, [isOpen]);
 
   const userFirstName = authenticatedUser?.name.split(' ').shift();
 
