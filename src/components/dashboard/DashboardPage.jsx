@@ -80,6 +80,18 @@ export default function DashboardPage() {
             opacity: 0.8,
           }),
         }}
+        onTransition={() => {
+          const MAX_TOP_POSITION = 162;
+          const reactourElement = document.querySelector('.reactour');
+          const reactourTransform = reactourElement.style.transform.match(/translate\((.*)px, (.*)px\)/);
+          const left = reactourTransform[1];
+          const top = reactourTransform[2];
+
+          document.querySelector('.reactour').style.transform = `translate(${left}px, ${top}px)`;
+          if (top <= MAX_TOP_POSITION) {
+            document.querySelector('.reactour').style.transform = `translate(${left}px, ${MAX_TOP_POSITION}px)`;
+          }
+        }}
       >
         <Dashboard />
       </TourProvider>
