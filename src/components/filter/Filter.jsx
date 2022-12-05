@@ -12,9 +12,9 @@ const getFilterGroups = (isShowLearningPathFlag) =>
     }
     return filterGroup;
   });
-const FilterGroup = ({ options, label, onChange, active = [] }) => (
+const FilterGroup = ({ options, groupName, onChange, active = [] }) => (
   <div className="filter-group">
-    <h4 className="filter-group__title">{label}</h4>
+    <h4 className="filter-group__title">{groupName}</h4>
     {options.map((option) => (
       <div key={option.value} className="filter-group__item">
         <Form.Checkbox checked={active.includes(option.value)} onChange={onChange} value={option.value}>
@@ -30,11 +30,14 @@ export const Filter = ({ filter }) => {
     filter.toggle(group, [event.target.value]);
   };
   const filtredFilterGroups = getFilterGroups(filter.isShowLearningPathFlag);
-
   return (
     <>
       <h3 className="mb-4">Search and filter</h3>
-      <SearchBar onSubmit={(value) => filter.search(value)} btnSubmitTitle="Search" />
+      <SearchBar
+        onSubmit={(value) => filter.search(value)}
+        value={filter.current.search || ''}
+        btnSubmitTitle="Search"
+      />
       <hr className="my-4" />
       {filtredFilterGroups.map((group, index) => (
         <React.Fragment key={group.id}>
@@ -42,7 +45,7 @@ export const Filter = ({ filter }) => {
           <FilterGroup
             options={filter.options[group.id]}
             active={filter.current[group.id]}
-            label={group.label}
+            groupName={group.groupName}
             onChange={handleChange(group.id)}
           />
         </React.Fragment>
@@ -55,7 +58,7 @@ const ActiveFilterTag = ({ children, onClick }) => (
   <span className="active-filter__tag">
     {children}
     <button onClick={onClick} className="active-filter__icon" type="button">
-      <img src={closeIcon} alt="Remove this filter" />
+      <img className="active-filter__icon__img" src={closeIcon} alt="Remove this filter" />
     </button>
   </span>
 );
@@ -67,7 +70,7 @@ export const ActiveFilter = ({ filter }) => {
       accumulator.concat(
         filter.options[group.id]
           .filter((option) => filter.current[group.id].includes(option.value))
-          .map((item) => ({ ...item, group: group.id })),
+          .map((item) => ({ ...item, group: group.id, groupName: group.groupName })),
       ),
     [],
   );
@@ -80,16 +83,29 @@ export const ActiveFilter = ({ filter }) => {
 
   return (
     <div className="active-filter">
-      {activeFilters.map((item) =>
+      {activeFilters.map((item, key) =>
         item.group === 'search' ? (
-          <ActiveFilterTag onClick={() => filter.removeSearch()} key={`search-${item.value}`}>
-            {item.value}
-          </ActiveFilterTag>
+          <div key={`${item.group}-${item.value}`}>
+            <span className="active-filter__group-name">Search:</span>
+            <ActiveFilterTag onClick={() => filter.removeSearch()} key={`search-${item.value}`}>
+              {item.value}
+            </ActiveFilterTag>
+          </div>
         ) : (
-          <ActiveFilterTag onClick={() => handleChange(item.group, item.value)} key={`${item.group}-${item.value}`}>
-            {item.label}
-          </ActiveFilterTag>
+          <div key={`${item.group}-${item.value}`}>
+            {item.group !== activeFilters[key - 1]?.group && (
+              <span className="active-filter__group-name">{item.groupName}:</span>
+            )}
+            <ActiveFilterTag onClick={() => handleChange(item.group, item.value)} key={`${item.group}-${item.value}`}>
+              {item.label}
+            </ActiveFilterTag>
+          </div>
         ),
+      )}
+      {activeFilters.length !== 0 && (
+        <button className="active-filter__clear-all" type="button" onClick={() => filter.clear()}>
+          Clear All
+        </button>
       )}
     </div>
   );
@@ -120,7 +136,7 @@ FilterGroup.propTypes = {
       label: PropTypes.string,
     }),
   ).isRequired,
-  label: PropTypes.node.isRequired,
+  groupName: PropTypes.node.isRequired,
   onChange: PropTypes.func.isRequired,
   active: PropTypes.arrayOf(PropTypes.string),
 };

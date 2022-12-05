@@ -13,9 +13,9 @@ export const filterInitial = {
 };
 
 export const filterGroups = [
-  { id: 'learningPaths', label: 'Learning path' },
-  { id: 'languages', label: 'Language' },
-  { id: 'difficultyLevels', label: 'Difficulty level' },
+  { id: 'learningPaths', groupName: 'Learning Path' },
+  { id: 'languages', groupName: 'Language' },
+  { id: 'difficultyLevels', groupName: 'Difficulty Level' },
 ];
 
 /**

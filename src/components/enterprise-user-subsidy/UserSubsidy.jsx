@@ -45,6 +45,8 @@ const UserSubsidy = ({ children }) => {
     });
   }, []);
 
+  const clearFilter = () => setCatalogFilter(filterInitial);
+
   const searchFilter = useCallback((options) => {
     setCatalogFilter((currentFilter) => ({
       ...currentFilter,
@@ -73,6 +75,7 @@ const UserSubsidy = ({ children }) => {
           current: catalogFilter,
           options: filterOptions,
           toggle: toggleFilter,
+          clear: clearFilter,
           search: searchFilter,
           removeSearch: removeSearchFilter,
         },
