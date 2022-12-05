@@ -9,6 +9,7 @@ import { useCatalogData, useLearningPathData } from './data/hooks';
 import {
   LOADING_SCREEN_READER_TEXT,
   SHOW_LEARNING_PATH_FLAG,
+  SORT_OPTIONS_NAME,
   filterInitial,
   filterOptions,
   filterOptionsExpanded,
@@ -19,7 +20,7 @@ export const UserSubsidyContext = createContext();
 const UserSubsidy = ({ children }) => {
   const { enterpriseConfig } = useContext(AppContext);
   const [catalogFilter, setCatalogFilter] = useState(filterInitial);
-  const [sortingOption, setSortingOption] = useState('');
+  const [sortingOption, setSortingOption] = useState(SORT_OPTIONS_NAME.RECOMENDED);
   const [catalogData, isLoadingCatalogData, requestCourse] = useCatalogData({
     enterpriseId: enterpriseConfig.uuid,
     filter: catalogFilter,
