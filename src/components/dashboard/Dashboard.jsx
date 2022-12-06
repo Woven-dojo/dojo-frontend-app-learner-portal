@@ -115,6 +115,15 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter.current]);
 
+  useEffect(() => {
+    const scrollToTop = () => window.scrollTo(0, 0);
+    if (isOpen) {
+      window.addEventListener('scroll', scrollToTop);
+    } else {
+      window.removeEventListener('scroll', scrollToTop);
+    }
+  }, [isOpen]);
+
   const userFirstName = authenticatedUser?.name.split(' ').shift();
 
   const getCourseCTAButton = useCallback(() => {
