@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-
+import { SORT_OPTIONS_NAME, COURSE_DIFFICULTY_LEVEL } from './constants';
 import { fetchEnterpriseCatalogData, fetchLearningPathData, requestCourse } from './service';
 
 /**
@@ -38,7 +38,36 @@ const applyFilter = (courses = [], filter = {}, locales = []) => {
   return filteredCourses;
 };
 
-export function useCatalogData({ enterpriseId, filter = {} }) {
+const applySorting = (courses = [], sorting = '', locales = []) => {
+  if (!sorting) return courses;
+
+  const sortingArr = [
+    COURSE_DIFFICULTY_LEVEL.BASIC,
+    COURSE_DIFFICULTY_LEVEL.INTERMEDIATE,
+    COURSE_DIFFICULTY_LEVEL.ADVANCED,
+  ];
+
+  if (sorting === SORT_OPTIONS_NAME.ALPHABETICALLY) {
+    courses.sort((courseA, courseB) => courseA.title.localeCompare(courseB.title, locales));
+  }
+  if (sorting === SORT_OPTIONS_NAME.DIFFICULTY_ASC) {
+    const sortingArrASC = [...sortingArr, null];
+    courses.sort(
+      (courseA, courseB) =>
+        sortingArrASC.indexOf(courseA.difficulty_level) - sortingArrASC.indexOf(courseB.difficulty_level),
+    );
+  }
+  if (sorting === SORT_OPTIONS_NAME.DIFFICULTY_DESC) {
+    const sortingArrReverse = [...sortingArr.reverse(), null];
+    courses.sort(
+      (courseA, courseB) =>
+        sortingArrReverse.indexOf(courseA.difficulty_level) - sortingArrReverse.indexOf(courseB.difficulty_level),
+    );
+  }
+  return courses;
+};
+
+export function useCatalogData({ enterpriseId, filter = {}, sorting = '' }) {
   const [catalogData, setCatalogData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -70,7 +99,7 @@ export function useCatalogData({ enterpriseId, filter = {} }) {
   return [
     {
       ...catalogData,
-      courses_metadata: applyFilter(catalogData.courses_metadata, filter),
+      courses_metadata: applySorting(applyFilter(catalogData.courses_metadata, filter), sorting),
     },
     isLoading,
     requestCourseHandler,
