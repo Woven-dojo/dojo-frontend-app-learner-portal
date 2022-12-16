@@ -14,10 +14,11 @@ import { UserSubsidyContext } from '../enterprise-user-subsidy';
 import { Filter, ActiveFilter } from '../filter/Filter';
 import { Alarm, Baseline, Certificate, Checklist, Dash, World } from './data/svg';
 import { COURSES_PER_CATALOG_PAGE, LEARNING_PATH, CATALOG_COURSE } from './data/constants';
-import { courseSortOptions, SORT_OPTIONS_NAME } from '../enterprise-user-subsidy/data/constants';
+import { courseSortOptions } from '../enterprise-user-subsidy/data/constants';
 import { languageCodeToLabel } from '../../utils/common';
 import { useToast } from '../Toasts/hooks';
 import { setDashIfEmpty, isElementInDOM } from './utils/common';
+import { useUrlParams } from '../utils/hooks';
 
 function EmptyState({ title, text, image = emptyStateImage }) {
   return (
@@ -41,6 +42,11 @@ EmptyState.defaultProps = {
   image: emptyStateImage,
 };
 
+const setActivePage = (activePageUrl, pagesAmount) => {
+  const activePage = Number(activePageUrl);
+  return activePage && activePage <= pagesAmount ? activePage : 1;
+};
+
 export default function Dashboard() {
   const {
     enterpriseConfig: { name },
@@ -59,18 +65,19 @@ export default function Dashboard() {
   } = useContext(UserSubsidyContext);
   const toast = useToast();
   const { isOpen, currentStep, setSteps, setIsOpen, steps } = useTour();
-
-  const catalogPageCount = Math.ceil(catalogCourses.length / COURSES_PER_CATALOG_PAGE);
-  const [activeCatalogPage, setActiveCatalogPage] = useState(1);
+  const [activeCatalogPageUrl, setActiveCatalogPageUrl] = useUrlParams('p_act');
+  const [coursesPerCatalogPageUrl] = useUrlParams('p_per');
+  const coursesPerCatalogPage = Number(coursesPerCatalogPageUrl) || COURSES_PER_CATALOG_PAGE;
+  const catalogPageCount = Math.ceil(catalogCourses.length / coursesPerCatalogPage);
+  const [activeCatalogPage, setActiveCatalogPage] = useState(setActivePage(activeCatalogPageUrl, catalogPageCount));
   const catalogCoursesOnActivePage =
     catalogCourses?.slice(
-      (activeCatalogPage - 1) * COURSES_PER_CATALOG_PAGE,
-      (activeCatalogPage - 1) * COURSES_PER_CATALOG_PAGE + COURSES_PER_CATALOG_PAGE,
+      (activeCatalogPage - 1) * coursesPerCatalogPage,
+      (activeCatalogPage - 1) * coursesPerCatalogPage + coursesPerCatalogPage,
     ) ?? [];
   const [activeCourseParams, setActiveCourseParams] = useState(null);
   const [isLoading, setLoading] = useState(false);
-  const [sortingOption, setSortingOption] = useState(SORT_OPTIONS_NAME.RECOMENDED);
-
+  const [sortingOption, setSortingOption] = useState(sorting.option);
   const activeCourse = useMemo(() => {
     if (!activeCourseParams) {
       return null;
@@ -109,7 +116,7 @@ export default function Dashboard() {
   }, [steps, setIsOpen, setSteps]);
 
   useEffect(() => {
-    setActiveCatalogPage(1);
+    setActiveCatalogPage(setActivePage(activeCatalogPageUrl, catalogPageCount));
     if (!activeCourse) {
       onDrawerClose();
     }
@@ -194,7 +201,7 @@ export default function Dashboard() {
 
   const hangleSortingChange = (option) => {
     setSortingOption(option);
-    sorting(option);
+    sorting.sort(option);
   };
 
   return (
@@ -325,7 +332,10 @@ export default function Dashboard() {
                         paginationLabel={`Page ${activeCatalogPage} of ${catalogPageCount}`}
                         pageCount={catalogPageCount}
                         currentPage={activeCatalogPage}
-                        onPageSelect={(pageNumber) => setActiveCatalogPage(pageNumber)}
+                        onPageSelect={(pageNumber) => {
+                          setActiveCatalogPage(pageNumber);
+                          setActiveCatalogPageUrl(pageNumber);
+                        }}
                       />
                     </Col>
                   </Row>
