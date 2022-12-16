@@ -77,7 +77,7 @@ export default function Dashboard() {
     ) ?? [];
   const [activeCourseParams, setActiveCourseParams] = useState(null);
   const [isLoading, setLoading] = useState(false);
-  const [sortingOption, setSortingOption] = useState(sorting.option);
+  const [sortingOption, setSortingOption] = useState(sorting?.option);
   const activeCourse = useMemo(() => {
     if (!activeCourseParams) {
       return null;
