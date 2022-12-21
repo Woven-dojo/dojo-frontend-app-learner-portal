@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { SORT_OPTIONS_NAME, COURSE_DIFFICULTY_LEVEL } from './constants';
+import { COURSE_DIFFICULTY_LEVEL } from './constants';
+import { SORT_OPTIONS_NAME } from '../../utils/constants';
 import { fetchEnterpriseCatalogData, fetchLearningPathData, requestCourse } from './service';
 
 /**

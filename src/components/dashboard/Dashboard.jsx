@@ -13,7 +13,7 @@ import DashboardDrawer from './DashboardDrawer';
 import { UserSubsidyContext } from '../enterprise-user-subsidy';
 import { Filter, ActiveFilter } from '../filter/Filter';
 import { Alarm, Baseline, Certificate, Checklist, Dash, World } from './data/svg';
-import { COURSES_PER_CATALOG_PAGE, LEARNING_PATH, CATALOG_COURSE } from './data/constants';
+import { LEARNING_PATH, CATALOG_COURSE } from './data/constants';
 import { courseSortOptions } from '../enterprise-user-subsidy/data/constants';
 import { languageCodeToLabel } from '../../utils/common';
 import { useToast } from '../Toasts/hooks';
@@ -42,7 +42,7 @@ EmptyState.defaultProps = {
   image: emptyStateImage,
 };
 
-const setActivePage = (activePageUrl, pagesAmount) => {
+const checkActivePageNumber = (activePageUrl, pagesAmount) => {
   const activePage = Number(activePageUrl);
   return activePage && activePage <= pagesAmount ? activePage : 1;
 };
@@ -65,15 +65,15 @@ export default function Dashboard() {
   } = useContext(UserSubsidyContext);
   const toast = useToast();
   const { isOpen, currentStep, setSteps, setIsOpen, steps } = useTour();
-  const [activeCatalogPageUrl, setActiveCatalogPageUrl] = useUrlParams('p_act');
-  const [coursesPerCatalogPageUrl] = useUrlParams('p_per');
-  const coursesPerCatalogPage = Number(coursesPerCatalogPageUrl) || COURSES_PER_CATALOG_PAGE;
-  const catalogPageCount = Math.ceil(catalogCourses.length / coursesPerCatalogPage);
-  const [activeCatalogPage, setActiveCatalogPage] = useState(setActivePage(activeCatalogPageUrl, catalogPageCount));
+  const [query, handleQuery] = useUrlParams(['pAct', 'pPer']);
+  const catalogPageCount = Math.ceil(catalogCourses.length / query.paginPerPage);
+  const [activeCatalogPage, setActiveCatalogPage] = useState(
+    checkActivePageNumber(query.paginCurrentPage, catalogPageCount),
+  );
   const catalogCoursesOnActivePage =
     catalogCourses?.slice(
-      (activeCatalogPage - 1) * coursesPerCatalogPage,
-      (activeCatalogPage - 1) * coursesPerCatalogPage + coursesPerCatalogPage,
+      (activeCatalogPage - 1) * query.paginPerPage,
+      (activeCatalogPage - 1) * query.paginPerPage + query.paginPerPage,
     ) ?? [];
   const [activeCourseParams, setActiveCourseParams] = useState(null);
   const [isLoading, setLoading] = useState(false);
@@ -92,6 +92,10 @@ export default function Dashboard() {
   }, [activeCourseParams, courses, catalogCourses]);
 
   const onDrawerClose = () => setActiveCourseParams(null);
+
+  useEffect(() => {
+    setActiveCatalogPage(checkActivePageNumber(query.paginCurrentPage, catalogPageCount));
+  }, [query.paginCurrentPage, catalogPageCount]);
 
   useEffect(() => {
     if (state?.activationSuccess) {
@@ -116,7 +120,7 @@ export default function Dashboard() {
   }, [steps, setIsOpen, setSteps]);
 
   useEffect(() => {
-    setActiveCatalogPage(setActivePage(activeCatalogPageUrl, catalogPageCount));
+    setActiveCatalogPage(checkActivePageNumber(query.paginCurrentPage, catalogPageCount));
     if (!activeCourse) {
       onDrawerClose();
     }
@@ -334,7 +338,7 @@ export default function Dashboard() {
                         currentPage={activeCatalogPage}
                         onPageSelect={(pageNumber) => {
                           setActiveCatalogPage(pageNumber);
-                          setActiveCatalogPageUrl(pageNumber);
+                          handleQuery('pAct', pageNumber);
                         }}
                       />
                     </Col>

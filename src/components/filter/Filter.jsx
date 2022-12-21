@@ -69,13 +69,13 @@ export const ActiveFilter = ({ filter }) => {
     (accumulator, group) =>
       accumulator.concat(
         filter.options[group.id]
-          .filter((option) => filter.current[group.id].includes(option.value))
+          .filter((option) => filter.current?.[group.id].includes(option.value))
           .map((item) => ({ ...item, group: group.id, groupName: group.groupName })),
       ),
     [],
   );
 
-  if (filter.current.search.length) activeFilters.push({ value: filter.current.search, group: 'search' });
+  if (filter.current?.search?.length) activeFilters.push({ value: filter.current.search, group: 'search' });
 
   const handleChange = (group, value) => {
     filter.toggle(group, [value]);
@@ -87,7 +87,7 @@ export const ActiveFilter = ({ filter }) => {
         item.group === 'search' ? (
           <div key={`${item.group}-${item.value}`}>
             <span className="active-filter__group-name">Search:</span>
-            <ActiveFilterTag onClick={() => filter.removeSearch()} key={`search-${item.value}`}>
+            <ActiveFilterTag onClick={() => filter.search('')} key={`search-${item.value}`}>
               {item.value}
             </ActiveFilterTag>
           </div>
@@ -113,7 +113,7 @@ export const ActiveFilter = ({ filter }) => {
 
 const filterPropTypes = PropTypes.shape({
   toggle: PropTypes.func.isRequired,
-  current: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])).isRequired,
+  current: PropTypes.objectOf(PropTypes.any).isRequired,
   options: PropTypes.objectOf(
     PropTypes.arrayOf(
       PropTypes.shape({

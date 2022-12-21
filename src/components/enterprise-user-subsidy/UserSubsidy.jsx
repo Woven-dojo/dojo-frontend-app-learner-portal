@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useMemo, useState, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { AppContext } from '@edx/frontend-platform/react';
 import { Container } from '@edx/paragon';
@@ -10,122 +10,52 @@ import { useCatalogData, useLearningPathData } from './data/hooks';
 import {
   LOADING_SCREEN_READER_TEXT,
   SHOW_LEARNING_PATH_FLAG,
-  SORT_OPTIONS_NAME,
-  filterInitial,
   filterOptions,
   filterOptionsExpanded,
 } from './data/constants';
 
 export const UserSubsidyContext = createContext();
 
-const convertToArray = (value) => {
-  if (value.length > 0) {
-    return typeof value === 'string' ? value.split(',') : value;
-  }
-  return [];
-};
-
 const UserSubsidy = ({ children }) => {
   const { enterpriseConfig } = useContext(AppContext);
-  const [searchUrl, setSearchUrl] = useUrlParams('q');
-  const [sortingUrl, setSortingUrl] = useUrlParams('s');
-  const [difficultyLevelsUrl, setDifficultyLevelsUrl] = useUrlParams('f_dif');
-  const [languagesUrl, setLanguagesUrl] = useUrlParams('f_lan');
-  const [learningPathsUrl, setLearningPathsUrl] = useUrlParams('f_lern');
-  const [catalogFilter, setCatalogFilter] = useState(filterInitial);
-  const [sortingOption, setSortingOption] = useState(sortingUrl || SORT_OPTIONS_NAME.RECOMENDED);
+  const [queryFilters, handleQuery] = useUrlParams(['q', 's', 'fDiff', 'fLan', 'fLern']);
   const [catalogData, isLoadingCatalogData, requestCourse] = useCatalogData({
     enterpriseId: enterpriseConfig.uuid,
-    filter: catalogFilter,
-    sorting: sortingOption,
+    filter: queryFilters,
+    sorting: queryFilters.sort,
   });
   const [learningPathData, isLoadingLearningPathdata] = useLearningPathData();
   const featureFlagsData = useQuery('featureFlags', fetchFeatureFlags);
   const isShowLearningPathFlag = !featureFlagsData.isLoading ? featureFlagsData.data?.[SHOW_LEARNING_PATH_FLAG] : false;
-
   const isLoading = isLoadingCatalogData || isLoadingLearningPathdata || featureFlagsData.isLoading;
-
-  useEffect(() => {
-    setCatalogFilter((currentFilter) => ({
-      ...currentFilter,
-      search: searchUrl,
-      difficultyLevels: convertToArray(difficultyLevelsUrl),
-      languages: convertToArray(languagesUrl),
-      learningPaths: convertToArray(learningPathsUrl),
-    }));
-  }, [searchUrl, difficultyLevelsUrl, languagesUrl, learningPathsUrl]);
-
-  const setFilterUrl = useCallback(
-    (group, value) => {
-      if (group === 'difficultyLevels') {
-        setDifficultyLevelsUrl(value);
-        return;
-      }
-      if (group === 'languages') {
-        setLanguagesUrl(value);
-        return;
-      }
-      if (group === 'learningPaths') {
-        setLearningPathsUrl(value);
-      }
-    },
-    [setDifficultyLevelsUrl, setLanguagesUrl, setLearningPathsUrl],
-  );
 
   const toggleFilter = useCallback(
     (group, options) => {
-      setCatalogFilter((currentFilter) => {
-        let newFilterValues = [...currentFilter[group]];
-        const allOptions = filterOptionsExpanded[group] ? filterOptionsExpanded[group][options] : options;
-        allOptions.forEach((option) => {
-          newFilterValues = newFilterValues.includes(option)
-            ? newFilterValues.filter((value) => value !== option)
-            : [...newFilterValues, option];
-        });
-        setFilterUrl(group, newFilterValues);
-        return {
-          ...currentFilter,
-          [group]: newFilterValues,
-        };
+      let newFilterValues = [...queryFilters[group]];
+      const allOptions = filterOptionsExpanded[group] ? filterOptionsExpanded[group][options] : options;
+      allOptions.forEach((option) => {
+        newFilterValues = newFilterValues.includes(option)
+          ? newFilterValues.filter((value) => value !== option)
+          : [...newFilterValues, option];
       });
+      if (group === 'difficultyLevels') {
+        handleQuery('fDiff', newFilterValues);
+        return;
+      }
+      if (group === 'languages') {
+        handleQuery('fLan', newFilterValues);
+        return;
+      }
+      if (group === 'learningPaths') {
+        handleQuery('fLern', newFilterValues);
+      }
     },
-    [setFilterUrl],
+    [queryFilters, handleQuery],
   );
 
   const clearFilter = useCallback(() => {
-    setSearchUrl('');
-    setDifficultyLevelsUrl('');
-    setLanguagesUrl('');
-    setLearningPathsUrl('');
-    setCatalogFilter(filterInitial);
-  }, [setSearchUrl, setDifficultyLevelsUrl, setLanguagesUrl, setLearningPathsUrl, setCatalogFilter]);
-
-  const searchFilter = useCallback(
-    (options) => {
-      setCatalogFilter((currentFilter) => ({
-        ...currentFilter,
-        search: options,
-      }));
-      setSearchUrl(options);
-    },
-    [setSearchUrl],
-  );
-
-  const removeSearchFilter = useCallback(() => {
-    setCatalogFilter((currentFilter) => ({
-      ...currentFilter,
-      search: '',
-    }));
-    setSearchUrl('');
-  }, [setSearchUrl]);
-
-  const toggleSort = useCallback(
-    (option) => {
-      setSortingOption(option);
-      setSortingUrl(option);
-    },
-    [setSortingOption, setSortingUrl],
-  );
+    ['q', 'fDiff', 'fLan', 'fLern'].map((queryParam) => handleQuery(queryParam, ''));
+  }, [handleQuery]);
 
   const contextValue = useMemo(() => {
     if (isLoading) {
@@ -138,16 +68,15 @@ const UserSubsidy = ({ children }) => {
         data: catalogData,
         filter: {
           isShowLearningPathFlag,
-          current: catalogFilter,
+          current: queryFilters,
           options: filterOptions,
           toggle: toggleFilter,
           clear: clearFilter,
-          search: searchFilter,
-          removeSearch: removeSearchFilter,
+          search: (option) => handleQuery('q', option),
         },
         sorting: {
-          option: sortingOption,
-          sort: toggleSort,
+          option: queryFilters.sort,
+          sort: (option) => handleQuery('s', option),
         },
         requestCourse,
       },
@@ -156,15 +85,12 @@ const UserSubsidy = ({ children }) => {
     isLoading,
     catalogData,
     learningPathData,
-    catalogFilter,
+    queryFilters,
     isShowLearningPathFlag,
     requestCourse,
     toggleFilter,
-    searchFilter,
-    removeSearchFilter,
-    sortingOption,
     clearFilter,
-    toggleSort,
+    handleQuery,
   ]);
 
   if (isLoading) {
@@ -174,6 +100,7 @@ const UserSubsidy = ({ children }) => {
       </Container>
     );
   }
+
   return (
     <>
       {/* Render the children so the rest of the page shows */}
