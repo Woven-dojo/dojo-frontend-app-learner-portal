@@ -28,16 +28,13 @@ exports[`Layout should render the expected HTML 1`] = `
                   onClick={[Function]}
                 >
                   <img
-                    alt=""
                     src="test-file-stub"
                   />
                 </a>
               </div>
               <div
                 className="col"
-              >
-                
-              </div>
+              />
             </div>
           </div>
           <div
@@ -75,7 +72,6 @@ exports[`Layout should render the expected HTML 1`] = `
                 onClick={[Function]}
               >
                 <img
-                  alt=""
                   src="test-file-stub"
                 />
               </a>
@@ -130,7 +126,7 @@ exports[`Layout should render the expected HTML 1`] = `
     </div>
   </main>
   <footer
-    className="master-footer"
+    className="dojo-footer"
   >
     <div
       className="container"

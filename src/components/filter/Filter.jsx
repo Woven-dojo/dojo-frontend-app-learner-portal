@@ -1,7 +1,7 @@
 import { Form } from '@edx/paragon';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SearchBar } from '@woven-dojo/dojo-frontend-common/dist';
+import { SearchBar } from '@woven-dojo/dojo-frontend-ui';
 import { filterGroups } from '../enterprise-user-subsidy/data/constants';
 import closeIcon from '../../assets/icons/close.svg';
 

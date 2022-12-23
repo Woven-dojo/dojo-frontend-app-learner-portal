@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Container, Row, Col, Pagination, TransitionReplace, Button, Hyperlink, Spinner } from '@edx/paragon';
 import { AppContext } from '@edx/frontend-platform/react';
 import PropTypes from 'prop-types';
-import { CourseCard, CourseDetails, Sortbox } from '@woven-dojo/dojo-frontend-common';
+import { CourseCard, CourseDetails, Sortbox } from '@woven-dojo/dojo-frontend-ui';
 import { useTour } from '@reactour/tour';
 import emptyStateImage from '../../assets/images/empty-state.svg';
 import noResultsImage from '../../assets/images/no-results.svg';
