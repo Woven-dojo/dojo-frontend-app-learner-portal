@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Container } from '@edx/paragon';
 
-import { Footer } from '@woven-dojo/dojo-frontend-common/dist/components';
+import { Footer } from '@woven-dojo/dojo-frontend-ui';
 import ErrorPageHeader from './ErrorPageHeader';
 
 /**

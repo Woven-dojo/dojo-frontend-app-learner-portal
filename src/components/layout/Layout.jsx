@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { IntlProvider } from 'react-intl';
 import { AppContext } from '@edx/frontend-platform/react';
 import { getConfig } from '@edx/frontend-platform/config';
-import { Footer, Header } from '@woven-dojo/dojo-frontend-common/dist/components';
+import { Footer, Header } from '@woven-dojo/dojo-frontend-ui';
 import { useStylesForCustomBrandColors } from './data/hooks';
 import { isDefinedAndNotNull } from '../../utils/common';
 import './styles/Layout.scss';
