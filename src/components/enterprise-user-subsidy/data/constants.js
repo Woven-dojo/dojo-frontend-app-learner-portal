@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 
 import { languageCodeToLabel } from '../../../utils/common';
+import { SORT_OPTIONS_NAME } from '../../utils/constants';
 
 export const LOADING_SCREEN_READER_TEXT = 'loading your edX benefits from your organization';
 
@@ -90,13 +91,6 @@ export const filterOptions = {
 };
 
 export const SHOW_LEARNING_PATH_FLAG = 'lms.filter.show_learning_path';
-
-export const SORT_OPTIONS_NAME = {
-  RECOMENDED: 'recomended',
-  ALPHABETICALLY: 'alphabetically',
-  DIFFICULTY_ASC: 'difficultyASC',
-  DIFFICULTY_DESC: 'difficultyDESC',
-};
 
 export const COURSE_DIFFICULTY_LEVEL = {
   BASIC: 'Basic',
